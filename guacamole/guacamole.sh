@@ -13,6 +13,6 @@ echo "<VirtualHost *:80>
         Allow from all
         </Proxy>
 
-</VirtualHost>" >> /etc/httpd/conf.d/guacamole
+</VirtualHost>" >> /etc/httpd/conf.d/guacamole.conf
 
 service httpd restart
