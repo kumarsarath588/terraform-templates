@@ -2,13 +2,13 @@
 
 echo "<VirtualHost *:80>
         ServerName ${elb}
-        ProxyPass /guacamole/ http://${elb}:8080/guacamole/
-        ProxyPassReverse /guacamole/ http://${elb}:8080/guacamole/
+        ProxyPass /guacamole/ http://${elb}/guacamole/
+        ProxyPassReverse /guacamole/ http://${elb}/guacamole/
         ProxyRequests Off
         ProxyPreserveHost on
         ProxyBadHeader Ignore
 
-        <Proxy http://${elb}:8080/*>
+        <Proxy http://${elb}/*>
         Order deny,allow
         Allow from all
         </Proxy>
