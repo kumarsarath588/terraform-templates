@@ -1,18 +1,19 @@
 #!/bin/bash
+echo "server {
+    listen       80;
+    server_name  localhost;
 
-echo "<VirtualHost *:80>
-        ServerName ${elb}
-        ProxyPass /guacamole/ http://${elb}/guacamole/
-        ProxyPassReverse /guacamole/ http://${elb}/guacamole/
-        ProxyRequests Off
-        ProxyPreserveHost on
-        ProxyBadHeader Ignore
 
-        <Proxy http://${elb}/*>
-        Order deny,allow
-        Allow from all
-        </Proxy>
+    location / {
+         proxy_pass http://${elb}:8080/guacamole/;
+    }
 
-</VirtualHost>" >> /etc/httpd/conf.d/guacamole.conf
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
 
-service httpd restart
+
+
+}" >> /etc/nginx/conf.d/default.conf
+service nginx restart
