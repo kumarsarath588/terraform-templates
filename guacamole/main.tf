@@ -22,10 +22,10 @@ resource "aws_elb" "elb-guacamole-app" {
     healthy_threshold = 2
     unhealthy_threshold = 2
     timeout = 3
-    target = "HTTP:8080/guacamole"
+    target = "HTTP:8080/guacamole/"
     interval = 30
   }
-  security_groups = ["sg-d982f2bc"]
+  security_groups = ["sg-2f1e684a"]
   cross_zone_load_balancing = true
   idle_timeout = 400
   connection_draining = true
@@ -50,38 +50,38 @@ resource "aws_lb_cookie_stickiness_policy" "elb-stickness-guacamole-app" {
 /* This resource create a aws auto scaling launch configuration 
 with ami image of guacamole app spinning up t2.micro instance. */
 
-#resource "aws_launch_configuration" "as-conf-guacamole-app" {
-#	name = "as-conf-guacamole-app"
-#    image_id = "ami-52978200"
-#    instance_type = "t2.small"
-#	key_name = "309342"
-#	security_groups = [ "sg-8b85f5ee"]
-#    lifecycle {
-#      create_before_destroy = true
-#    }
-#}
+resource "aws_launch_configuration" "as-conf-guacamole-app" {
+	name = "as-conf-guacamole-app"
+    image_id = "ami-eda7608e"
+    instance_type = "t2.small"
+	key_name = "309342"
+	security_groups = [ "sg-8b85f5ee"]
+    lifecycle {
+      create_before_destroy = true
+    }
+}
 
 /* This resource create a aws autoscaling group in TechM vpc private 
    subnets with min instances of 2 and max instaces of 4 */
    
-#resource "aws_autoscaling_group" "asg-guacamole-app" {
-#  name = "asg-guacamole-app"
-#  vpc_zone_identifier = ["subnet-fd57d78a", "subnet-d4da43b1"]
-#  max_size = 4
-#  min_size = 2
-#  health_check_grace_period = 300
-#  health_check_type = "ELB"
-#  desired_capacity = 2
-#  force_delete = true
-#  launch_configuration = "${aws_launch_configuration.as-conf-guacamole-app.name}"
-#  load_balancers = ["${aws_elb.elb-guacamole-app.name}"]
-#
-#  tag {
-#    key = "name"
-#    value = "guacmole-app"
-#    propagate_at_launch = true
-#  }
-#}
+resource "aws_autoscaling_group" "asg-guacamole-app" {
+  name = "asg-guacamole-app"
+  vpc_zone_identifier = ["subnet-fd57d78a", "subnet-d4da43b1"]
+  max_size = 4
+  min_size = 2
+  health_check_grace_period = 300
+  health_check_type = "ELB"
+  desired_capacity = 2
+  force_delete = true
+  launch_configuration = "${aws_launch_configuration.as-conf-guacamole-app.name}"
+  load_balancers = ["${aws_elb.elb-guacamole-app.name}"]
+
+  tag {
+    key = "name"
+    value = "guacmole-app"
+    propagate_at_launch = true
+  }
+}
 
 /* This resource creates elastic load balancer for guacamole webserver
    with internal subnets of TechM VPC which listens on 80 port 
@@ -101,10 +101,10 @@ resource "aws_elb" "elb-guacamole-web" {
     healthy_threshold = 2
     unhealthy_threshold = 2
     timeout = 3
-    target = "HTTP:80/guacamole"
+    target = "HTTP:80/guacamole/"
     interval = 30
   }
-  security_groups = ["sg-d982f2bc"]
+  security_groups = ["sg-2f1e684a"]
   cross_zone_load_balancing = true
   idle_timeout = 400
   connection_draining = true
@@ -136,10 +136,10 @@ with ami image of guacamole web spinning up t2.micro instance. */
 
 resource "aws_launch_configuration" "as-conf-guacamole-web" {
     name = "as-conf-guacamole-web"
-    image_id = "ami-12243640"
+    image_id = "ami-e4925587"
     instance_type = "t2.small"
     key_name = "309342"
-    security_groups = [ "sg-940b45f1"]
+    security_groups = [ "sg-2f1e684a"]
     user_data = "${template_file.guacamole_sh.rendered}"
     lifecycle {
       create_before_destroy = true
