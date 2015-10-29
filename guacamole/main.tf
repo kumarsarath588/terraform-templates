@@ -101,7 +101,7 @@ resource "aws_elb" "elb-guacamole-web" {
     healthy_threshold = 2
     unhealthy_threshold = 2
     timeout = 3
-    target = "HTTP:80/"
+    target = "HTTP:80/guacamole/"
     interval = 30
   }
   security_groups = ["sg-2f1e684a"]
