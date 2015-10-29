@@ -7,8 +7,8 @@ provider "aws" {
     with internal subnets of TechM VPC which listens on 80 port 
     and redirects to 8080 port of guacamole application servers */
 	
-resource "aws_elb" "elb-guacamole-app" {
-  name = "elb-guacamole-app"
+resource "aws_elb" "elb-g-app" {
+  name = "elb-g-app"
   subnets = ["subnet-fd57d78a","subnet-d4da43b1"]
   internal = true
   listener {
@@ -32,7 +32,7 @@ resource "aws_elb" "elb-guacamole-app" {
   connection_draining_timeout = 400
 
   tags {
-    Name = "elb-guacamole-app"
+    Name = "elb-g-app"
   }
 }
 
@@ -42,7 +42,7 @@ resource "aws_elb" "elb-guacamole-app" {
    
 resource "aws_lb_cookie_stickiness_policy" "elb-stickness-guacamole-app" {
       name = "elb-stickness-guacamole-app"
-      load_balancer = "${aws_elb.elb-guacamole-app.id}"
+      load_balancer = "${aws_elb.elb-g-app.id}"
       lb_port = 80
       cookie_expiration_period = 600
 }
@@ -74,7 +74,7 @@ resource "aws_autoscaling_group" "asg-guacamole-app" {
   desired_capacity = 2
   force_delete = true
   launch_configuration = "${aws_launch_configuration.as-conf-guacamole-app.name}"
-  load_balancers = ["${aws_elb.elb-guacamole-app.name}"]
+  load_balancers = ["${aws_elb.elb-g-app.name}"]
 
   tag {
     key = "name"
@@ -128,7 +128,7 @@ resource "aws_lb_cookie_stickiness_policy" "elb-stickness-guacamole-web" {
 resource "template_file" "guacamole_sh" {
     filename = "guacamole.sh"
     vars {
-        elb = "${aws_elb.elb-guacamole-app.dns_name}"
+        elb = "${aws_elb.elb-g-app.dns_name}"
     }
 }
 /* This resource create a aws auto scaling launch configuration 
