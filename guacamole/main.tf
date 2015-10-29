@@ -51,11 +51,11 @@ resource "aws_lb_cookie_stickiness_policy" "elb-stickness-guacamole-app" {
 with ami image of guacamole app spinning up t2.micro instance. */
 
 resource "aws_launch_configuration" "as-conf-guacamole-app" {
-	name = "as-conf-guacamole-app"
+    name = "as-conf-guacamole-app"
     image_id = "ami-eda7608e"
     instance_type = "t2.small"
-	key_name = "309342"
-	security_groups = [ "sg-8b85f5ee"]
+    key_name = "309342"
+    security_groups = [ "sg-8b85f5ee"]
     lifecycle {
       create_before_destroy = true
     }
