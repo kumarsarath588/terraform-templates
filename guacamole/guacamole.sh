@@ -5,7 +5,7 @@ echo "server {
 
 
     location / {
-         proxy_pass http://${elb}:8080/guacamole/;
+         proxy_pass http://${elb}/guacamole/;
     }
 
     error_page   500 502 503 504  /50x.html;
