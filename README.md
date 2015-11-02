@@ -5,7 +5,7 @@
 
 This templates can be used as a modules of can be cloned and executed  directly by passing variabels.As of now this templates supports only aws as a provider. In order to import these modules into your template. create example.tf file with,
 
-    `module "database-mysql" {
+    module "database-mysql" {
         source = "github.com/kumarsarath588/terraform-templates/database-mysql"
         access_key = "${var.access_key}"
         secret_key = "${var.secret_key}"
@@ -16,7 +16,7 @@ This templates can be used as a modules of can be cloned and executed  directly 
     
     output "db" {
         value = "${module.database.db_address}"
-    }`
+    }
 
 As our configuration is completed we need to add some vaiables like access_key and secret key.
 
