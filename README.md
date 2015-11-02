@@ -22,11 +22,11 @@ As our configuration is completed we need to add some vaiables like access_key a
 
 As you can see that i am using them as variables because i don't want to hardcode in my configuration file, you can give then in above configuration or you can create variables.tf file with,
 
-    `variable "access_key" {}
+    variable "access_key" {}
     variable "secret_key" {}
     variable "region" {
         default = "ap-southeast-1"
-    }`
+    }
 
 Now, your config is ready its time to plan our configuration
 
@@ -36,6 +36,6 @@ Now, your config is ready its time to plan our configuration
 
 Note: You can also save the keys in terrafrom.tfvars file and execute the above commands.
 
-    `access_key = "foo"
-    secret_key = "foo"`
+    access_key = "foo"
+    secret_key = "foo"
 
