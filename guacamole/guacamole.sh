@@ -13,4 +13,4 @@ echo "<VirtualHost *:80>
         </Proxy>
  
 </VirtualHost>" >> /etc/httpd/conf.d/guacamole.conf;
-service httpd restart
+service httpd restart;

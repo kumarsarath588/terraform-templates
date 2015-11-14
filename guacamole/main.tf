@@ -55,9 +55,6 @@ resource "aws_launch_configuration" "as-conf-guacamole-app" {
     instance_type = "t2.small"
     key_name = "309342"
     security_groups = [ "sg-8b85f5ee"]
-    lifecycle {
-      create_before_destroy = true
-    }
 }
 
 /* This resource create a aws autoscaling group in TechM vpc private 
@@ -74,7 +71,6 @@ resource "aws_autoscaling_group" "asg-guacamole-app" {
   force_delete = true
   launch_configuration = "${aws_launch_configuration.as-conf-guacamole-app.name}"
   load_balancers = ["${aws_elb.elb-g-app.name}"]
-
   tag {
     key = "name"
     value = "guacmole-app"
@@ -118,10 +114,10 @@ resource "aws_elb" "elb-guacamole-web" {
    of the browser */
 
 resource "aws_lb_cookie_stickiness_policy" "elb-stickness-guacamole-web" {
-      name = "elb-stickness-guacamole-web"
-      load_balancer = "${aws_elb.elb-guacamole-web.id}"
-      lb_port = 80
-      cookie_expiration_period = 600
+  name = "elb-stickness-guacamole-web"
+  load_balancer = "${aws_elb.elb-guacamole-web.id}"
+  lb_port = 80
+  cookie_expiration_period = 600
 }
 
 resource "template_file" "guacamole_sh" {
@@ -134,14 +130,11 @@ resource "template_file" "guacamole_sh" {
 with ami image of guacamole web spinning up t2.micro instance. */
 
 resource "aws_launch_configuration" "as-conf-guacamole-web" {
-    image_id = "ami-60bf7803"
-    instance_type = "t2.small"
-    key_name = "309342"
-    security_groups = [ "sg-2f1e684a"]
-    user_data = "${template_file.guacamole_sh.rendered}"
-    lifecycle {
-      create_before_destroy = true
-    }
+  image_id = "ami-60bf7803"
+  instance_type = "t2.small"
+  key_name = "309342"
+  security_groups = [ "sg-2f1e684a"]
+  user_data = "${template_file.guacamole_sh.rendered}"
 }
 
 /* This resource create a aws autoscaling group in TechM vpc private 
@@ -157,7 +150,6 @@ resource "aws_autoscaling_group" "asg-guacamole-web" {
   force_delete = true
   launch_configuration = "${aws_launch_configuration.as-conf-guacamole-web.name}"
   load_balancers = ["${aws_elb.elb-guacamole-web.name}"]
-
   tag {
     key = "name"
     value = "guacmole-web"
